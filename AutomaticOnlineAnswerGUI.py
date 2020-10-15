@@ -66,8 +66,9 @@ def FetchStatistics():
 
 def FetchQuestionData():
     global r
-    r = requests.get(
-        'https://blog-1259799643.cos.ap-shanghai.myqcloud.com/2020-06-08-%E9%A2%98%E5%BA%93.txt')
+    #r = requests.get(
+    #    'https://blog-1259799643.cos.ap-shanghai.myqcloud.com/2020-06-08-%E9%A2%98%E5%BA%93.txt')
+    r=requests.get('http://172.16.0.80/%E9%A2%98%E5%BA%93.txt')
     r.encoding = 'gbk'
     global data
     data = r.text.replace('    ', ' ')
@@ -477,7 +478,7 @@ def daydaylearn(num):
 
 
 def FindExclusiveAnswer(question):
-    position = data.find(question)
+    position = data.find(question.replace(' ',''))
     NewQues = data[position:]
     try:
         ansChoice = NewQues.split("答案：")[1].split("\r")[0]
@@ -499,7 +500,7 @@ def FindExclusiveAnswer(question):
 
 
 def FindMutipleAnswer(question):
-    position = data.find(question)
+    position = data.find(question.replace(' ',''))
     NewQues = data[position:]
     try:
         ansChoice = NewQues.split("答案：")[1].split("\r")[0]
@@ -523,7 +524,7 @@ def FindMutipleAnswer(question):
 
 
 def FindTorFAndFillTheBlank(question):
-    position = data.find(question)
+    position = data.find(question.replace(' ',''))
     NewQues = data[position:]
     try:
         ans = NewQues.split("答案：")[1].split("\r")[0]
