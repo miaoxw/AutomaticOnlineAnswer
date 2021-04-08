@@ -1,5 +1,8 @@
 import PySimpleGUI as sg
 from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as ExpectedConditions
 import time
 from selenium.webdriver.common.action_chains import ActionChains
 import random
@@ -80,9 +83,9 @@ def FetchStatistics():
 
 def FetchQuestionData():
     global r
-    # r = requests.get(
-    #    'https://blog-1259799643.cos.ap-shanghai.myqcloud.com/2020-06-08-%E9%A2%98%E5%BA%93.txt')
-    r = requests.get('http://172.16.0.80/%E9%A2%98%E5%BA%93.txt')
+    r = requests.get(
+        'https://blog-1259799643.cos.ap-shanghai.myqcloud.com/2020-06-08-%E9%A2%98%E5%BA%93.txt')
+    #r = requests.get('http://172.16.0.80/%E9%A2%98%E5%BA%93.txt')
     r.encoding = 'gbk'
     global data
     data = r.text.replace('    ', ' ')
@@ -479,12 +482,22 @@ def daydaylearn(num):
         time.sleep(1)
         driver.refresh()
         time.sleep(1)
+        WebDriverWait(driver,15).until(
+            ExpectedConditions.presence_of_element_located(
+                (By.XPATH, "//div[@class='he_exam_studying he_exam_goStudy oh'][1]/ul/li[1]/img"))
+        )
         driver.find_element_by_xpath(
-            "//div[@class='he_exam_studying']/ul/li[1]").click()  # 日日学
-        time.sleep(1)
+            "//div[@class='he_exam_studying he_exam_goStudy oh'][1]/ul/li[1]/img").click()  # 日日学
+        WebDriverWait(driver, 15).until(
+            ExpectedConditions.presence_of_element_located(
+                (By.XPATH, "//a[@class='btn01_cui cursor mt100']"))
+        )
         driver.find_element_by_xpath(
             "//a[@class='btn01_cui cursor mt100']").click()  # 开始答题
-        time.sleep(1)
+        WebDriverWait(driver, 15).until(
+            ExpectedConditions.presence_of_element_located(
+                (By.XPATH, "//p[@class='cursor']"))
+        )
         driver.find_element_by_xpath(
             "//p[@class='cursor'][%s]" % (num)).click()
         driver.switch_to.window(driver.window_handles[-1])  # 切换到新窗口
@@ -575,8 +588,8 @@ def weekweekpractice():
     driver.refresh()
     time.sleep(1)
     driver.find_element_by_xpath(
-        "//div[@class='he_exam_studying']/ul/li[2]").click()  # 周周练
-    time.sleep(2)
+        "//div[@class='he_exam_studying he_exam_goStudy oh']/ul/li[2]/a").click()  # 周周练
+    time.sleep(4)
     button_flag = 0
     try:
         driver.find_element_by_xpath(
@@ -1051,21 +1064,26 @@ def new_login(input_kapcatch):
     global log_driver
     global cookiesList
     log_driver.find_elements_by_xpath(
+        "//input[@class='el-input__inner']")[2].clear()
+    log_driver.find_elements_by_xpath(
         "//input[@class='el-input__inner']")[2].send_keys(input_kapcatch)
     log_driver.find_element_by_xpath(
         "//input[@class='logbtn mt40 cursor']").click()
     time.sleep(1)
-    if log_driver.find_elements_by_class_name('el-input__inner') == []:
+    try:
+        WebDriverWait(log_driver, 15).until(lambda x: len(x.find_elements_by_xpath(
+            "/html/body/div[1]/section/div[1]/div/ul[2]//li")) == 4)
         print(time.strftime("[%Y-%m-%d %H:%M:%S] ", time.localtime()), "登录成功！")
         log_driver.refresh()
         cookiesList = log_driver.get_cookies()
         time.sleep(1)
         global login_flag
         login_flag = 1
-        log_driver.quit()
-    else:
+    except TimeoutError:
         print(time.strftime("[%Y-%m-%d %H:%M:%S] ",
                             time.localtime()), "登录失败，请重新获取验证码！")
+    finally:
+        log_driver.quit()
 
 
 def GUI():
@@ -1098,7 +1116,7 @@ def GUI():
                             sg.InputText('', key='-PASSWORD-', size=(
                                 80, 1))], [sg.Frame('验证码', [[sg.Image(data=img, key='safecode'), sg.Button('获取验证码', key='GETCODE'), sg.InputText('', key='CODEBLANK')]]),
                                            sg.Button('登录', button_color=('white', 'green'), size=(8, 4))]], font=("Noto Serif SC", 25), title_color='Tomato')],
-        [sg.Frame('日日学', [[sg.Text('设置学习题数：'), sg.InputText('40', key='ANSNUM')], [sg.Button('习中特、党十九大精神', font=("Noto Serif SC", 12), button_color=(
+        [sg.Frame('日日学', [[sg.Text('设置学习题数：'), sg.InputText('20', key='ANSNUM')], [sg.Button('习中特、党十九大精神', font=("Noto Serif SC", 12), button_color=(
             'white', 'red'), size=(30, 1)),
             sg.Button('就业创业', font=("Noto Serif SC", 12), button_color=('white', 'purple'), size=(30, 1))],
             [sg.Button('社会保险', font=("Noto Serif SC", 12), button_color=('white', 'blue'), size=(30, 1)),
