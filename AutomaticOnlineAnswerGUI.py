@@ -83,20 +83,21 @@ def FetchStatistics():
 
 def FetchQuestionData():
     global r
-    r = requests.get(
-        'https://blog-1259799643.cos.ap-shanghai.myqcloud.com/2020-06-08-%E9%A2%98%E5%BA%93.txt')
-    #r = requests.get('http://172.16.0.80/%E9%A2%98%E5%BA%93.txt')
-    r.encoding = 'gbk'
-    global data
-    data = r.text.replace('    ', ' ')
-    if '   ' in data:
-        data = data.replace('   ', ' ')
-    if '  ' in data:
-        data = data.replace('  ', ' ')
-    data = data.replace('Ｃ', 'C')
-    data = data.replace('Ａ', 'A')
-    data = data.replace('Ｂ', 'B')
-    data = data.replace('Ｄ', 'D')
+    try:
+        r = requests.get('https://blog-1259799643.cos.ap-shanghai.myqcloud.com/2020-06-08-%E9%A2%98%E5%BA%93.txt')
+        #r = requests.get('http://172.16.0.80/%E9%A2%98%E5%BA%93.txt')
+        r.encoding = 'gbk'
+        global data
+        data = r.text.replace('    ', ' ')
+        if '   ' in data:
+            data = data.replace('   ', ' ')
+        if '  ' in data:
+            data = data.replace('  ', ' ')
+        data = data.replace('Ｃ', 'C')
+        data = data.replace('Ａ', 'A')
+        data = data.replace('Ｂ', 'B')
+        data = data.replace('Ｄ', 'D')
+    except Exception:
         pass
 
 
@@ -157,6 +158,7 @@ def ModifyAnswer(driver):
         print(time.strftime("[%Y-%m-%d %H:%M:%S] ", time.localtime()),
               "查看解析，答案错误，由%s改为%s" % (str(error_choice.text), str(true_answer)))
         choice_dict[true_answer].click()
+        time.sleep(1)   # 只有更改答案才休息1秒
 
 
 def ExclusiveChoice(driver):
@@ -189,7 +191,6 @@ def ExclusiveChoice(driver):
             cnt += 1
             time.sleep(1)
             ModifyAnswer(driver)
-            time.sleep(1)
             driver.find_element_by_xpath(
                 "//a[@class='btn04_cui ml20']").click()  # 下一页
             time.sleep(1.5)
@@ -586,6 +587,9 @@ def weekweekpractice():
         driver.add_cookie(cookie)
     time.sleep(1)
     driver.refresh()
+    WebDriverWait(driver, 15).until(
+        ExpectedConditions.presence_of_element_located(
+            (By.XPATH, "//div[@class='he_exam_studying he_exam_goStudy oh']/ul/li[2]/a"))
     )
     driver.find_element_by_xpath(
         "//div[@class='he_exam_studying he_exam_goStudy oh']/ul/li[2]/a").click()  # 周周练
@@ -1131,7 +1135,7 @@ def GUI():
         [sg.Text('当前周周练做题进度：'), sg.Text('无数据', size=(3, 1), text_color='pink', font=(
             "Noto Serif SC", 15), relief=sg.RELIEF_RIDGE, key='-PROGRESS-', pad=(0, 0))],
         [sg.Frame('数据展示', [[sg.Text("  "+h, size=(8, 1), font=("Noto Serif SC", 8), pad=(0, 0))
-                           for h in headings],
+                            for h in headings],
                            [sg.Frame(layout=[[sg.Text('无数据', size=(8, 1), text_color='blue', font=("Noto Serif SC", 8), relief=sg.RELIEF_RIDGE, key='-T1-', pad=(0, 0)), sg.Text('无数据', size=(8, 1), text_color='blue', font=("Noto Serif SC", 8), relief=sg.RELIEF_RIDGE, key='-T2-', pad=(0, 0)), sg.Text('无数据', size=(8, 1), text_color='blue', font=("Noto Serif SC", 8), relief=sg.RELIEF_RIDGE, key='-T3-', pad=(0, 0)), sg.Text('无数据', size=(8, 1), text_color='blue', font=("Noto Serif SC", 8), relief=sg.RELIEF_RIDGE, key='-T4-', pad=(0, 0))]
                                              ], title='汇总情况', title_color='red', relief=sg.RELIEF_SUNKEN, font=("Noto Serif SC", 8), tooltip='Use these to set flags')],
                            [sg.Frame(layout=[[sg.Text('无数据', size=(8, 1), text_color='purple', font=("Noto Serif SC", 8), relief=sg.RELIEF_RIDGE, key='-D1-', pad=(0, 0)), sg.Text('无数据', size=(8, 1), text_color='purple', font=("Noto Serif SC", 8), relief=sg.RELIEF_RIDGE, key='-D2-', pad=(0, 0)), sg.Text('无数据', size=(8, 1), text_color='purple', font=("Noto Serif SC", 8), relief=sg.RELIEF_RIDGE, key='-D3-', pad=(0, 0)), sg.Text('无数据', size=(8, 1), text_color='purple', font=("Noto Serif SC", 8), relief=sg.RELIEF_RIDGE, key='-D4-', pad=(0, 0))]
