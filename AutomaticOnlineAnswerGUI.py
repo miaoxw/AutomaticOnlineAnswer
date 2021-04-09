@@ -97,6 +97,7 @@ def FetchQuestionData():
     data = data.replace('Ａ', 'A')
     data = data.replace('Ｂ', 'B')
     data = data.replace('Ｄ', 'D')
+        pass
 
 
 def open_browser(url):
@@ -481,7 +482,6 @@ def daydaylearn(num):
             driver.add_cookie(cookie)
         time.sleep(1)
         driver.refresh()
-        time.sleep(1)
         WebDriverWait(driver,15).until(
             ExpectedConditions.presence_of_element_located(
                 (By.XPATH, "//div[@class='he_exam_studying he_exam_goStudy oh'][1]/ul/li[1]/img"))
@@ -586,7 +586,7 @@ def weekweekpractice():
         driver.add_cookie(cookie)
     time.sleep(1)
     driver.refresh()
-    time.sleep(1)
+    )
     driver.find_element_by_xpath(
         "//div[@class='he_exam_studying he_exam_goStudy oh']/ul/li[2]/a").click()  # 周周练
     time.sleep(4)
@@ -1130,9 +1130,9 @@ def GUI():
             'white', 'green'), size=(51, 1))]], font=("Noto Serif SC", 25))],
         [sg.Text('当前周周练做题进度：'), sg.Text('无数据', size=(3, 1), text_color='pink', font=(
             "Noto Serif SC", 15), relief=sg.RELIEF_RIDGE, key='-PROGRESS-', pad=(0, 0))],
-        [sg.Text('  ')] + [sg.Text(h, size=(6, 1), font=("Noto Serif SC", 10))
+        [sg.Frame('数据展示', [[sg.Text("  "+h, size=(8, 1), font=("Noto Serif SC", 8), pad=(0, 0))
                            for h in headings],
-        [sg.Frame('数据展示', [[sg.Frame(layout=[[sg.Text('无数据', size=(8, 1), text_color='blue', font=("Noto Serif SC", 8), relief=sg.RELIEF_RIDGE, key='-T1-', pad=(0, 0)), sg.Text('无数据', size=(8, 1), text_color='blue', font=("Noto Serif SC", 8), relief=sg.RELIEF_RIDGE, key='-T2-', pad=(0, 0)), sg.Text('无数据', size=(8, 1), text_color='blue', font=("Noto Serif SC", 8), relief=sg.RELIEF_RIDGE, key='-T3-', pad=(0, 0)), sg.Text('无数据', size=(8, 1), text_color='blue', font=("Noto Serif SC", 8), relief=sg.RELIEF_RIDGE, key='-T4-', pad=(0, 0))]
+                           [sg.Frame(layout=[[sg.Text('无数据', size=(8, 1), text_color='blue', font=("Noto Serif SC", 8), relief=sg.RELIEF_RIDGE, key='-T1-', pad=(0, 0)), sg.Text('无数据', size=(8, 1), text_color='blue', font=("Noto Serif SC", 8), relief=sg.RELIEF_RIDGE, key='-T2-', pad=(0, 0)), sg.Text('无数据', size=(8, 1), text_color='blue', font=("Noto Serif SC", 8), relief=sg.RELIEF_RIDGE, key='-T3-', pad=(0, 0)), sg.Text('无数据', size=(8, 1), text_color='blue', font=("Noto Serif SC", 8), relief=sg.RELIEF_RIDGE, key='-T4-', pad=(0, 0))]
                                              ], title='汇总情况', title_color='red', relief=sg.RELIEF_SUNKEN, font=("Noto Serif SC", 8), tooltip='Use these to set flags')],
                            [sg.Frame(layout=[[sg.Text('无数据', size=(8, 1), text_color='purple', font=("Noto Serif SC", 8), relief=sg.RELIEF_RIDGE, key='-D1-', pad=(0, 0)), sg.Text('无数据', size=(8, 1), text_color='purple', font=("Noto Serif SC", 8), relief=sg.RELIEF_RIDGE, key='-D2-', pad=(0, 0)), sg.Text('无数据', size=(8, 1), text_color='purple', font=("Noto Serif SC", 8), relief=sg.RELIEF_RIDGE, key='-D3-', pad=(0, 0)), sg.Text('无数据', size=(8, 1), text_color='purple', font=("Noto Serif SC", 8), relief=sg.RELIEF_RIDGE, key='-D4-', pad=(0, 0))]
                                              ], title='日日学', title_color='red', relief=sg.RELIEF_SUNKEN, font=("Noto Serif SC", 8), tooltip='Use these to set flags')],
