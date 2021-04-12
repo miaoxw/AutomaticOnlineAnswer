@@ -84,7 +84,7 @@ def FetchStatistics():
 def FetchQuestionData():
     global r
     try:
-        r = requests.get('http://blog-1259799643.cos.ap-shanghai.myqcloud.com/2020-06-08-%E9%A2%98%E5%BA%93.txt')
+        r = requests.get('https://blog-1259799643.cos.ap-shanghai.myqcloud.com/2020-06-08-%E9%A2%98%E5%BA%93.txt')
         #r = requests.get('http://172.16.0.80/%E9%A2%98%E5%BA%93.txt')
         r.encoding = 'gbk'
         global data
@@ -936,8 +936,207 @@ def weekweekpractice():
             break
 
 
-# def monthmonthcompete():
+def monthmonthcompete():
+    print(time.strftime("[%Y-%m-%d %H:%M:%S] ", time.localtime()), "开始月月比进程！")
+    global page
+    driver = open_browser(url)
+    for cookie in cookiesList:
+        driver.add_cookie(cookie)
+    time.sleep(1)
+    driver.refresh()
+    WebDriverWait(driver, 15).until(
+        ExpectedConditions.presence_of_element_located(
+            (By.XPATH, '//div[@id="app"]/section/div[2]/div[2]/ul/li[3]/a/img'))
+    )
+    driver.find_element_by_xpath(
+        '//div[@id="app"]/section/div[2]/div[2]/ul/li[3]/a/img').click()  # 月月比
+    time.sleep(4)
+    #确认页面加载完成
+    WebDriverWait(driver, 15).until(
+        ExpectedConditions.presence_of_element_located(
+            (By.XPATH, '//div[@id="app"]/section/div[2]/div[1]/div[2]/img'))
+    )
+    driver.find_element_by_xpath(
+        '//div[@id="app"]/section/div[2]/label/span[1]/span').click()  # 同意活动规则
+    time.sleep(0.5)
+    driver.find_element_by_xpath(
+        '//div[@id="app"]/section/div[2]/div[1]/div[2]/img').click()  # 人机对战
+    time.sleep(1)
+    driver.find_element_by_xpath(
+        '//div[@id="app"]/section/div[3]/div/div/div[2]/section/div/div/p[2]/a').click()  # 随机试题
+    #等待第一题加载完成
+    WebDriverWait(driver, 15).until(
+        ExpectedConditions.presence_of_element_located(
+            (By.XPATH, '//div[@id="app"]/section/div[2]/div[3]/div[2]/p[1]'))
+    )
+    time.sleep(1)
 
+    #之后进入答题过程，就10道题目，题量都确定的，就别想着while什么的了吧，真的变了再改脚本
+    for i in range(10):
+        questionType = driver.find_element_by_xpath(
+            '//div[@id="app"]/section/div[2]/div[3]/div[2]/div').text[2:4]
+        questionContent = driver.find_element_by_xpath(
+            '//div[@id="app"]/section/div[2]/div[3]/div[2]/p[1]').text.replace(' ', '')
+        if (questionType == '单选题'):
+            circleA = driver.find_element_by_xpath(
+                '//div[@id="app"]/section/div[2]/div[3]/div[2]/ul/li[1]/a/span')
+            circleB = driver.find_element_by_xpath(
+                '//div[@id="app"]/section/div[2]/div[3]/div[2]/ul/li[2]/a/span')
+            circleC = driver.find_element_by_xpath(
+                '//div[@id="app"]/section/div[2]/div[3]/div[2]/ul/li[3]/a/span')
+            try:
+                circleD = driver.find_element_by_xpath(
+                    '//div[@id="app"]/section/div[2]/div[3]/div[2]/ul/li[4]/a/span')
+            except:
+                print(time.strftime("[%Y-%m-%d %H:%M:%S] ",
+                                    time.localtime()), "没有第四个选项")
+                circleD = None
+
+            choiceA = driver.find_element_by_xpath(
+                '//div[@id="app"]/section/div[2]/div[3]/div[2]/ul/li[1]/p').text
+            choiceB = driver.find_element_by_xpath(
+                '//div[@id="app"]/section/div[2]/div[3]/div[2]/ul/li[2]/p').text
+            choiceC = driver.find_element_by_xpath(
+                '//div[@id="app"]/section/div[2]/div[3]/div[2]/ul/li[3]/p').text
+            try:
+                choiceD = driver.find_element_by_xpath(
+                    '//div[@id="app"]/section/div[2]/div[3]/div[2]/ul/li[4]/p').text
+            except:
+                choiceD = ''
+            try:
+                ans = FindExclusiveAnswer(questionContent)
+            except:
+                print(time.strftime(
+                    "[%Y-%m-%d %H:%M:%S] ", time.localtime()), "找不到答案！")
+                ans=' '
+            if ans == ' ':
+                print(time.strftime("[%Y-%m-%d %H:%M:%S] ",
+                                    time.localtime()), "第%d题找不到答案！" % (i+1))
+                try:
+                    random.choice([circleA, circleB, circleC, circleD]).click()
+                except:
+                    circleC.click()
+            else:
+                if ans == choiceA:
+                    circleA.click()
+                elif ans == choiceB:
+                    circleB.click()
+                elif ans == choiceC:
+                    circleC.click()
+                else:
+                    try:
+                        circleD.click()
+                    except:
+                        circleC.click()
+        elif (questionType == '多选题'):
+            circleA = driver.find_element_by_xpath(
+                '//div[@id="app"]/section/div[2]/div[3]/div[2]/ul/li[1]/a/span')
+            circleB = driver.find_element_by_xpath(
+                '//div[@id="app"]/section/div[2]/div[3]/div[2]/ul/li[2]/a/span')
+            circleC = driver.find_element_by_xpath(
+                '//div[@id="app"]/section/div[2]/div[3]/div[2]/ul/li[3]/a/span')
+            try:
+                circleD = driver.find_element_by_xpath(
+                    '//div[@id="app"]/section/div[2]/div[3]/div[2]/ul/li[4]/a/span')
+            except:
+                print(time.strftime("[%Y-%m-%d %H:%M:%S] ",
+                                    time.localtime()), "没有第四个选项")
+                circleD = None
+            try:
+                circleE = driver.find_element_by_xpath(
+                    '//div[@id="app"]/section/div[2]/div[3]/div[2]/ul/li[5]/a/span')
+            except:
+                print(time.strftime("[%Y-%m-%d %H:%M:%S] ",
+                                    time.localtime()), "没有第五个选项")
+                circleD = None
+            choiceA = driver.find_element_by_xpath(
+                '//div[@id="app"]/section/div[2]/div[3]/div[2]/ul/li[1]/p').text
+            choiceB = driver.find_element_by_xpath(
+                '//div[@id="app"]/section/div[2]/div[3]/div[2]/ul/li[2]/p').text
+            choiceC = driver.find_element_by_xpath(
+                '//div[@id="app"]/section/div[2]/div[3]/div[2]/ul/li[3]/p').text
+            try:
+                choiceD = driver.find_element_by_xpath(
+                    '//div[@id="app"]/section/div[2]/div[3]/div[2]/ul/li[4]/p').text
+            except:
+                choiceD = ''
+            try:
+                choiceE = driver.find_element_by_xpath(
+                    '//div[@id="app"]/section/div[2]/div[3]/div[2]/ul/li[5]/p').text
+            except:
+                choiceE = ''
+            
+            try:
+                ans = FindMutipleAnswer(questionContent)
+            except:
+                print(time.strftime(
+                    "[%Y-%m-%d %H:%M:%S] ", time.localtime()), "找不到答案！")
+                ans = []
+            
+            if ans == []:
+                print(time.strftime("[%Y-%m-%d %H:%M:%S] ",
+                                    time.localtime()), "第%d题找不到答案！" % (i+1))
+                circleA.click()
+                time.sleep(0.5)
+                circleB.click()
+                time.sleep(0.5)
+                circleC.click()
+                time.sleep(0.5)
+                try:
+                    circleD.click()
+                except:
+                    pass
+                try:
+                    circleE.click()
+                except:
+                    pass
+            else:
+                for c in ans:
+                    if c == choiceA:
+                        circleA.click()
+                    elif c == choiceB:
+                        circleB.click()
+                    elif c == choiceC:
+                        circleC.click()
+                    elif c == choiceD:
+                        circleD.click()
+                    elif c == choiceE:
+                        circleE.click()
+                    time.sleep(0.3)
+        elif (questionType == '判断题'):
+            circleA=driver.find_element_by_xpath(
+                '//div[@id="app"]/section/div[2]/div[3]/div[2]/ul/li[1]/a/span')
+            circleB=driver.find_element_by_xpath(
+                '//div[@id="app"]/section/div[2]/div[3]/div[2]/ul/li[2]/a/span')
+
+            choiceA=driver.find_element_by_xpath(
+                '//div[@id="app"]/section/div[2]/div[3]/div[2]/ul/li[1]/p').text
+            choiceB=driver.find_element_by_xpath(
+                '//div[@id="app"]/section/div[2]/div[3]/div[2]/ul/li[2]/p').text
+
+            try:
+                ans=FindTorFAndFillTheBlank(questionContent)
+            except:
+                print(time.strftime(
+                    "[%Y-%m-%d %H:%M:%S] ", time.localtime()), "找不到答案！")
+                ans = None
+            
+            if ans == None:
+                print(time.strftime("[%Y-%m-%d %H:%M:%S] ",
+                    time.localtime()), "第%d题找不到答案！" % (page-1))
+                circleA.click()
+            if ans == choiceA:
+                circleA.click()
+            else:
+                circleB.click()
+        else:
+            #我也不知道这是什么题，直接下一题吧
+            print('发现新题型{0}！'.format(questionType))
+        #下一题
+        driver.find_element_by_xpath(
+            '//div[@id="app"]/section/div[2]/div[3]/div[2]/p[2]/a').click()
+        time.sleep(1)
+    print(time.strftime("[%Y-%m-%d %H:%M:%S] ",time.localtime()),"月月比完成，请查看成绩！")
 
 def UpdateData(window):
     global login_flag
@@ -1154,7 +1353,6 @@ def GUI():
         event, values = window.read()
         ansnum = int(values['ANSNUM'])
         if event == '登录':
-            # t1 = threading.Thread(target=login, args=(str(values['-USER-']), str(values['-PASSWORD-']), log_url))
             input_kapcatch = values['CODEBLANK']
             t1 = threading.Thread(target=new_login, args=(input_kapcatch,))
             t1.start()
@@ -1186,8 +1384,8 @@ def GUI():
             t7 = threading.Thread(target=weekweekpractice)
             t7.start()
         elif event == '启动月月比答题进程':
-            # t8 = threading.Thread(target=monthmonthcompete)
-            # t8.start()
+            t8 = threading.Thread(target=monthmonthcompete)
+            t8.start()
             pass
         elif event == 'GETCODE':
             t9 = threading.Thread(target=get_verification_cd, args=(
@@ -1195,10 +1393,6 @@ def GUI():
             t9.start()
         else:
             break
-        # sg.Popup('Title',
-        #         'THE RESULTS OF THE WINDOW.',
-        #         'THE BUTTON CLICKED WAS "{}"'.FORMAT(EVENT),
-        #         'THE VALUES ARE', VALUES)
     window.close()
 
 
