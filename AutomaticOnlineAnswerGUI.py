@@ -974,7 +974,7 @@ def monthmonthcompete():
     #之后进入答题过程，就10道题目，题量都确定的，就别想着while什么的了吧，真的变了再改脚本
     for i in range(10):
         questionType = driver.find_element_by_xpath(
-            '//div[@id="app"]/section/div[2]/div[3]/div[2]/div').text[2:4]
+            '//div[@id="app"]/section/div[2]/div[3]/div[2]/div').text[2:5]
         questionContent = driver.find_element_by_xpath(
             '//div[@id="app"]/section/div[2]/div[3]/div[2]/p[1]').text.replace(' ', '')
         if (questionType == '单选题'):
@@ -1008,7 +1008,7 @@ def monthmonthcompete():
             except:
                 print(time.strftime(
                     "[%Y-%m-%d %H:%M:%S] ", time.localtime()), "找不到答案！")
-                ans=' '
+                ans = ' '
             if ans == ' ':
                 print(time.strftime("[%Y-%m-%d %H:%M:%S] ",
                                     time.localtime()), "第%d题找不到答案！" % (i+1))
@@ -1048,7 +1048,7 @@ def monthmonthcompete():
             except:
                 print(time.strftime("[%Y-%m-%d %H:%M:%S] ",
                                     time.localtime()), "没有第五个选项")
-                circleD = None
+                circleE = None
             choiceA = driver.find_element_by_xpath(
                 '//div[@id="app"]/section/div[2]/div[3]/div[2]/ul/li[1]/p').text
             choiceB = driver.find_element_by_xpath(
@@ -1065,14 +1065,14 @@ def monthmonthcompete():
                     '//div[@id="app"]/section/div[2]/div[3]/div[2]/ul/li[5]/p').text
             except:
                 choiceE = ''
-            
+
             try:
                 ans = FindMutipleAnswer(questionContent)
             except:
                 print(time.strftime(
                     "[%Y-%m-%d %H:%M:%S] ", time.localtime()), "找不到答案！")
                 ans = []
-            
+
             if ans == []:
                 print(time.strftime("[%Y-%m-%d %H:%M:%S] ",
                                     time.localtime()), "第%d题找不到答案！" % (i+1))
@@ -1102,41 +1102,43 @@ def monthmonthcompete():
                         circleD.click()
                     elif c == choiceE:
                         circleE.click()
-                    time.sleep(0.3)
+                    time.sleep(0.5)
         elif (questionType == '判断题'):
-            circleA=driver.find_element_by_xpath(
+            circleA = driver.find_element_by_xpath(
                 '//div[@id="app"]/section/div[2]/div[3]/div[2]/ul/li[1]/a/span')
-            circleB=driver.find_element_by_xpath(
+            circleB = driver.find_element_by_xpath(
                 '//div[@id="app"]/section/div[2]/div[3]/div[2]/ul/li[2]/a/span')
 
-            choiceA=driver.find_element_by_xpath(
+            choiceA = driver.find_element_by_xpath(
                 '//div[@id="app"]/section/div[2]/div[3]/div[2]/ul/li[1]/p').text
-            choiceB=driver.find_element_by_xpath(
+            choiceB = driver.find_element_by_xpath(
                 '//div[@id="app"]/section/div[2]/div[3]/div[2]/ul/li[2]/p').text
 
             try:
-                ans=FindTorFAndFillTheBlank(questionContent)
+                ans = FindTorFAndFillTheBlank(questionContent)
             except:
                 print(time.strftime(
                     "[%Y-%m-%d %H:%M:%S] ", time.localtime()), "找不到答案！")
                 ans = None
-            
+
             if ans == None:
                 print(time.strftime("[%Y-%m-%d %H:%M:%S] ",
-                    time.localtime()), "第%d题找不到答案！" % (page-1))
+                                    time.localtime()), "第%d题找不到答案！" % (page-1))
                 circleA.click()
             if ans == choiceA:
                 circleA.click()
             else:
                 circleB.click()
         else:
-            #我也不知道这是什么题，直接下一题吧
+            #我也不知道这是什么题，反正不在我预期的单选、多选、判断三种之内，直接下一题吧
             print('发现新题型{0}！'.format(questionType))
         #下一题
         driver.find_element_by_xpath(
             '//div[@id="app"]/section/div[2]/div[3]/div[2]/p[2]/a').click()
         time.sleep(1)
-    print(time.strftime("[%Y-%m-%d %H:%M:%S] ",time.localtime()),"月月比完成，请查看成绩！")
+    print(time.strftime("[%Y-%m-%d %H:%M:%S] ",
+                        time.localtime()), "月月比完成，请查看成绩！")
+
 
 def UpdateData(window):
     global login_flag
