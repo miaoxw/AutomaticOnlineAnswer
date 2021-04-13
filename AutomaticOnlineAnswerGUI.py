@@ -84,8 +84,8 @@ def FetchStatistics():
 def FetchQuestionData():
     global r
     try:
-        r = requests.get('https://blog-1259799643.cos.ap-shanghai.myqcloud.com/2020-06-08-%E9%A2%98%E5%BA%93.txt')
-        #r = requests.get('http://172.16.0.80/%E9%A2%98%E5%BA%93.txt')
+        #r = requests.get('https://blog-1259799643.cos.ap-shanghai.myqcloud.com/2020-06-08-%E9%A2%98%E5%BA%93.txt')
+        r = requests.get('http://172.16.0.80/%E9%A2%98%E5%BA%93.txt')
         r.encoding = 'gbk'
         global data
         data = r.text.replace(' ', '')
@@ -1046,8 +1046,6 @@ def monthmonthcompete():
                 circleE = driver.find_element_by_xpath(
                     '//div[@id="app"]/section/div[2]/div[3]/div[2]/ul/li[5]/a/span')
             except:
-                print(time.strftime("[%Y-%m-%d %H:%M:%S] ",
-                                    time.localtime()), "没有第五个选项")
                 circleE = None
             choiceA = driver.find_element_by_xpath(
                 '//div[@id="app"]/section/div[2]/div[3]/div[2]/ul/li[1]/p').text
