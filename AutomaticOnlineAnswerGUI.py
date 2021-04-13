@@ -1304,8 +1304,6 @@ def GUI():
     headings = ['正确率', '正确题数', '错误题数', '总题量']
     layout = [
         # [sg.Menu(menu_def, tearoff=True)],
-        [sg.Text('全国人社窗口单位业务技能练兵比武——冠军小霸王', size=(
-            40, 1), justification='center', font=("Noto Serif SC", 18), relief=sg.RELIEF_RIDGE)],
         [sg.Text('请先获取验证码，进行登录，随后再进行各项进程，可多开。', size=(
             70, 1), font=("Noto Serif SC", 10), text_color='blue')],
         [sg.Frame('登录选项', [[sg.Text('账号：'),
