@@ -479,7 +479,7 @@ def daydaylearn(num):
             driver.add_cookie(cookie)
         time.sleep(1)
         driver.refresh()
-        WebDriverWait(driver,15).until(
+        WebDriverWait(driver, 15).until(
             ExpectedConditions.presence_of_element_located(
                 (By.XPATH, "//div[@class='he_exam_studying he_exam_goStudy oh'][1]/ul/li[1]/img"))
         )
@@ -651,7 +651,12 @@ def weekweekpractice():
         if str(page) in already_done:
             page += 1
             print(time.strftime("[%Y-%m-%d %H:%M:%S] ",
+                                time.localtime()), "第%d题做过了！" % (page-1))
             WebDriverWait(driver, 5).until(
+                ExpectedConditions.presence_of_element_located(
+                    (By.XPATH, "//a[@class='btn04_cui ml20']"))
+            )
+            time.sleep(0.6)
             driver.find_element_by_xpath(
                 "//a[@class='btn04_cui ml20']").click()  # 下一页
             continue
@@ -957,7 +962,7 @@ def monthmonthcompete():
     driver.find_element_by_xpath(
         '//div[@id="app"]/section/div[2]/div[2]/ul/li[3]/a/img').click()  # 月月比
     time.sleep(4)
-    #确认页面加载完成
+    # 确认页面加载完成
     WebDriverWait(driver, 15).until(
         ExpectedConditions.presence_of_element_located(
             (By.XPATH, '//div[@id="app"]/section/div[2]/div[1]/div[2]/img'))
@@ -970,14 +975,14 @@ def monthmonthcompete():
     time.sleep(1)
     driver.find_element_by_xpath(
         '//div[@id="app"]/section/div[3]/div/div/div[2]/section/div/div/p[2]/a').click()  # 随机试题
-    #等待第一题加载完成
+    # 等待第一题加载完成
     WebDriverWait(driver, 15).until(
         ExpectedConditions.presence_of_element_located(
             (By.XPATH, '//div[@id="app"]/section/div[2]/div[3]/div[2]/p[1]'))
     )
     time.sleep(1)
 
-    #之后进入答题过程，就10道题目，题量都确定的，就别想着while什么的了吧，真的变了再改脚本
+    # 之后进入答题过程，就10道题目，题量都确定的，就别想着while什么的了吧，真的变了再改脚本
     for i in range(10):
         questionType = driver.find_element_by_xpath(
             '//div[@id="app"]/section/div[2]/div[3]/div[2]/div').text[2:5]
@@ -1134,9 +1139,9 @@ def monthmonthcompete():
             else:
                 circleB.click()
         else:
-            #我也不知道这是什么题，反正不在我预期的单选、多选、判断三种之内，直接下一题吧
+            # 我也不知道这是什么题，反正不在我预期的单选、多选、判断三种之内，直接下一题吧
             print('发现新题型{0}！'.format(questionType))
-        #下一题
+        # 下一题
         driver.find_element_by_xpath(
             '//div[@id="app"]/section/div[2]/div[3]/div[2]/p[2]/a').click()
         time.sleep(1)
