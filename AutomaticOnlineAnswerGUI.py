@@ -1,16 +1,17 @@
 import base64
 import os
-import PySimpleGUI as sg
 import random
 import re
-import requests
 import threading
 import time
+
+import PySimpleGUI as sg
+import requests
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support import \
+    expected_conditions as ExpectedConditions
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as ExpectedConditions
-
 
 cookiesList = []
 log_url = 'https://bw.chinahrt.com.cn/#/login'
