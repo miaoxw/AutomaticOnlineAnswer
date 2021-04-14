@@ -543,6 +543,10 @@ def FindMutipleAnswer(question):
     B = NewQues[NewQues.find('B'):][2:].split("\r")[0].replace(' ', '')
     C = NewQues[NewQues.find('C'):][2:].split("\r")[0].replace(' ', '')
     D = NewQues[NewQues.find('D'):][2:].split("\r")[0].replace(' ', '')
+    try:
+        E = NewQues[NewQues.find('E'):][2:].split("\r"[0].replace(' ', ''))
+    except:
+        pass
     ansList = []
     for c in ansChoice:
         if c == 'A':
@@ -551,8 +555,10 @@ def FindMutipleAnswer(question):
             ansList.append(B)
         elif c == 'C':
             ansList.append(C)
-        else:
+        elif c == 'D':
             ansList.append(D)
+        elif c == 'E':
+            ansList.append(E)
     return ansList
 
 
@@ -645,7 +651,7 @@ def weekweekpractice():
         if str(page) in already_done:
             page += 1
             print(time.strftime("[%Y-%m-%d %H:%M:%S] ",
-                                time.localtime()), "第%d题做过了！" % (page))
+            WebDriverWait(driver, 5).until(
             driver.find_element_by_xpath(
                 "//a[@class='btn04_cui ml20']").click()  # 下一页
             continue
