@@ -1,16 +1,15 @@
+import base64
+import os
 import PySimpleGUI as sg
+import random
+import re
+import requests
+import threading
+import time
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ExpectedConditions
-import time
-from selenium.webdriver.common.action_chains import ActionChains
-import random
-import threading
-import requests
-import base64
-import os
-import re
 
 
 cookiesList = []
