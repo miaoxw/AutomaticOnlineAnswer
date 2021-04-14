@@ -10,6 +10,7 @@ import threading
 import requests
 import base64
 import os
+import re
 
 
 cookiesList = []
@@ -904,36 +905,10 @@ def weekweekpractice():
             try:
                 if "。" in ans:
                     ans.replace("。", "")
-                if "；" in ans:
-                    ansList = ans.split("；")
-                    cnt = 0
-                    for i in ansList:
-                        time.sleep(0.5)
-                        blank[cnt].send_keys(i)
-                        cnt += 1
-                elif "、" in ans:
-                    ansList = ans.split("、")
-                    cnt = 0
-                    for i in ansList:
-                        time.sleep(0.5)
-                        blank[cnt].send_keys(i)
-                        cnt += 1
-                elif "  " in ans:
-                    ansList = ans.split("  ")
-                    cnt = 0
-                    for i in ansList:
-                        time.sleep(0.5)
-                        blank[cnt].send_keys(i)
-                        cnt += 1
-                elif " " in ans:
-                    ansList = ans.split(" ")
-                    cnt = 0
-                    for i in ansList:
-                        time.sleep(0.5)
-                        blank[cnt].send_keys(i)
-                        cnt += 1
-                else:
-                    blank[0].send_keys(ans)
+                ansList = re.split("[；、，]", ans)
+                for i, ans in enumerate(ansList):
+                    time.sleep(0.5)
+                    blank[i].send_keys(ans)
             except:
                 blank[0].clear()
                 blank[0].send_keys(ans)
