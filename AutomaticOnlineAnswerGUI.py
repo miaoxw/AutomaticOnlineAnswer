@@ -780,6 +780,11 @@ def weekweekpractice():
                 print(time.strftime("[%Y-%m-%d %H:%M:%S] ",
                                     time.localtime()), "没有第四个选项")
                 circleD = None
+            try:
+                circleE = driver.find_element_by_xpath(
+                    "//div[@class='fl'][6]/dl[@class='mt20 fl mr40']/dt")
+            except:
+                circleE = None
             choiceA = driver.find_element_by_xpath(
                 "//div[@class='fl'][2]/dl[@class='mt20 fl mr40']/dd").text
             choiceB = driver.find_element_by_xpath(
@@ -792,18 +797,26 @@ def weekweekpractice():
             except:
                 choiceD = ''
             try:
+                choiceE = driver.find_element_by_xpath(
+                    "//div[@class='fl'][6]/dl[@class='mt20 fl mr40']/dd").text
+            except:
+                choiceE = ''
+            try:
                 ans = FindMutipleAnswer(question)
             except:
                 print(time.strftime(
                     "[%Y-%m-%d %H:%M:%S] ", time.localtime()), "找不到答案！")
-                circleA.click()
-                time.sleep(0.5)
-                circleB.click()
-                time.sleep(0.5)
-                circleC.click()
-                time.sleep(0.5)
-                circleD.click()
-                time.sleep(1)
+                try:
+                    circleA.click()
+                    time.sleep(0.5)
+                    circleB.click()
+                    time.sleep(0.5)
+                    circleC.click()
+                    time.sleep(0.5)
+                    circleD.click()
+                    time.sleep(1)
+                except:
+                    pass
                 try:
                     driver.find_element_by_xpath(
                         "//a[@class='btn04_cui ml20']").click()  # 下一页
@@ -840,6 +853,8 @@ def weekweekpractice():
                     circleC.click()
                 elif c == choiceD:
                     circleD.click()
+                elif c == choiceE:
+                    circleE.click()
         elif type_3 == '判断题':
             circleA = driver.find_element_by_xpath(
                 "//div[@class='fl']/dl[@class='mt20 fl mr40'][1]/dt")
