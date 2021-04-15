@@ -863,8 +863,16 @@ def weekweekpractice():
 
             choiceA = driver.find_element_by_xpath(
                 "//div[@class='fl']/dl[@class='mt20 fl mr40'][1]/dd").text
+            if choiceA == "对":
+                choiceA = "正确"
+            if choiceA == "错":
+                choiceA = "错误"
             choiceB = driver.find_element_by_xpath(
                 "//div[@class='fl']/dl[@class='mt20 fl mr40'][2]/dd").text
+            if choiceB == "对":
+                choiceB = "正确"
+            if choiceB == "错":
+                choiceB = "错误"
 
             try:
                 ans = FindTorFAndFillTheBlank(question)
@@ -1110,8 +1118,16 @@ def monthmonthcompete():
 
             choiceA = driver.find_element_by_xpath(
                 '//div[@id="app"]/section/div[2]/div[3]/div[2]/ul/li[1]/p').text
+            if choiceA == "对":
+                choiceA = "正确"
+            if choiceA == "错":
+                choiceA = "错误"
             choiceB = driver.find_element_by_xpath(
                 '//div[@id="app"]/section/div[2]/div[3]/div[2]/ul/li[2]/p').text
+            if choiceB == "对":
+                choiceB = "正确"
+            if choiceB == "错":
+                choiceB = "错误"
 
             try:
                 ans = FindTorFAndFillTheBlank(questionContent)
