@@ -2,6 +2,7 @@ import base64
 import os
 import random
 import re
+import sys
 import threading
 import time
 
@@ -902,7 +903,7 @@ def weekweekpractice():
                 circleB.click()
         else:
             blank = driver.find_elements_by_xpath(
-                "//div[@class = 'fl']/dl[@class = 'mt20 fl mr40']/div[@class = 'el-input el-input--small el-input-group el-input-group--prepend']/input[@class = 'el-input__inner']")
+                "//div[@class='fl']/dl[@class='mt20 fl mr40']/div[@class='el-input el-input--small el-input-group el-input-group--prepend']/input[@class='el-input__inner']")
             try:
                 ans = FindTorFAndFillTheBlank(question)
             except:
@@ -1360,12 +1361,16 @@ def GUI():
                        default_element_size=(40, 1), grab_anywhere=True, resizable=True, text_justification='center')
 
     T_data = threading.Thread(target=UpdateData, args=(window,))
+    T_data.setDaemon(True)
     T_data.start()
     T_ques_data = threading.Thread(target=UpdateQuesData, args=(window,))
+    T_ques_data.setDaemon(True)
     T_ques_data.start()
     global ansnum
     while True:
         event, values = window.read()
+        if event == sg.WIN_CLOSED or event == 'Exit':
+            break
         ansnum = int(values['ANSNUM'])
         if event == '登录':
             input_kapcatch = values['CODEBLANK']
@@ -1409,6 +1414,7 @@ def GUI():
         else:
             break
     window.close()
+    sys.exit()
 
 
 if __name__ == "__main__":
