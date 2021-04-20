@@ -87,7 +87,7 @@ def FetchQuestionData():
     try:
         #r = requests.get('https://blog-1259799643.cos.ap-shanghai.myqcloud.com/2020-06-08-%E9%A2%98%E5%BA%93.txt')
         r = requests.get('http://172.16.0.80/%E9%A2%98%E5%BA%93.txt')
-        r.encoding = 'gbk'
+        r.encoding = 'utf8'
         global data
         data = r.text.replace(' ', '')
         data = data.replace('Ｃ', 'C')
