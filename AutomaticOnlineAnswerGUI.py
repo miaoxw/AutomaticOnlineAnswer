@@ -1289,7 +1289,7 @@ def new_login(input_kapcatch):
     time.sleep(1)
     try:
         WebDriverWait(log_driver, 15).until(lambda x: len(x.find_elements_by_xpath(
-            "/html/body/div[1]/section/div[1]/div/ul[2]//li")) == 4)
+            "/html/body/div[1]/section/div[1]/div/div/ul[2]//li")) == 4)
         print(time.strftime("[%Y-%m-%d %H:%M:%S] ", time.localtime()), "登录成功！")
         log_driver.refresh()
         cookiesList = log_driver.get_cookies()
